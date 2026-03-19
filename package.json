@@ -1,0 +1,13 @@
+{
+  "name": "regex-api",
+  "version": "1.0.0",
+  "description": "A simple REST API to test regular expressions",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
