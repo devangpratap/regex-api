@@ -32,7 +32,7 @@ app.post('/test', (req, res) => {
       groups: match.groups || null,
       captured: match.slice(1),
     });
-    if (!globalRegex.global) break;
+    if (match[0].length === 0) globalRegex.lastIndex++;
   }
 
   res.json({
