@@ -66,4 +66,33 @@ app.post('/test', (req, res) => {
   });
 });
 
+// POST /replace
+// body: { pattern: string, flags: string (optional), input: string, replacement: string }
+// returns: result string after replacement
+app.post('/replace', (req, res) => {
+  const { pattern, flags = '', input, replacement } = req.body;
+
+  if (!pattern || input === undefined || replacement === undefined) {
+    return res.status(400).json({ error: 'pattern, input, and replacement are required' });
+  }
+
+  if (pattern.length > MAX_PATTERN_LENGTH) {
+    return res.status(400).json({ error: `pattern exceeds maximum length of ${MAX_PATTERN_LENGTH}` });
+  }
+
+  if (input.length > MAX_INPUT_LENGTH) {
+    return res.status(400).json({ error: `input exceeds maximum length of ${MAX_INPUT_LENGTH}` });
+  }
+
+  let re;
+  try {
+    re = new RegExp(pattern, flags);
+  } catch (e) {
+    return res.status(400).json({ error: `invalid regex: ${e.message}` });
+  }
+
+  const result = input.replace(re, replacement);
+  res.json({ pattern, flags, input, replacement, result });
+});
+
 app.listen(PORT, () => console.log(`regex-api running on port ${PORT}`));
