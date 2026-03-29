@@ -7,6 +7,8 @@ app.use(express.json());
 
 const PORT = process.env.PORT || 3000;
 const REGEX_TIMEOUT_MS = 5000;
+const MAX_PATTERN_LENGTH = 2000;
+const MAX_INPUT_LENGTH = 100_000;
 
 // POST /test
 // body: { pattern: string, flags: string (optional), input: string }
@@ -16,6 +18,14 @@ app.post('/test', (req, res) => {
 
   if (!pattern || input === undefined) {
     return res.status(400).json({ error: 'pattern and input are required' });
+  }
+
+  if (pattern.length > MAX_PATTERN_LENGTH) {
+    return res.status(400).json({ error: `pattern exceeds maximum length of ${MAX_PATTERN_LENGTH}` });
+  }
+
+  if (input.length > MAX_INPUT_LENGTH) {
+    return res.status(400).json({ error: `input exceeds maximum length of ${MAX_INPUT_LENGTH}` });
   }
 
   try {
