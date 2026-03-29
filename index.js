@@ -10,6 +10,11 @@ const REGEX_TIMEOUT_MS = 5000;
 const MAX_PATTERN_LENGTH = 2000;
 const MAX_INPUT_LENGTH = 100_000;
 
+// GET /health
+app.get('/health', (req, res) => {
+  res.json({ status: 'ok' });
+});
+
 // POST /test
 // body: { pattern: string, flags: string (optional), input: string }
 // returns: matches, groups, positions, isValid
